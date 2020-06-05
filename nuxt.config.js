@@ -30,7 +30,7 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [],
+  plugins: ['@/plugins/composition-api'],
   /*
    ** Nuxt.js dev-modules
    */
@@ -48,6 +48,8 @@ export default {
     '@nuxtjs/axios',
     // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv',
+    // Doc: https://auth.nuxtjs.org/
+    '@nuxtjs/auth',
   ],
   /*
    ** Axios module configuration
@@ -75,6 +77,9 @@ export default {
       },
     },
   },
+  router: {
+    // middleware: [ auth ],
+  },
   /*
    ** Build configuration
    */
@@ -82,7 +87,11 @@ export default {
     /*
      ** You can extend webpack config here
      */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    extend(config, ctx) {},
+    transpile: [/typed-vuex/],
+    extend(config, ctx) {
+      if (ctx.isDev) {
+        config.devtool = ctx.isClient ? 'source-map' : 'inline-source-map'
+      }
+    },
   },
 }
