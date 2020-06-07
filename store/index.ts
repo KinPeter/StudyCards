@@ -4,6 +4,7 @@ import {
   getterTree,
   mutationTree,
 } from 'nuxt-typed-vuex'
+import * as menu from '~/store/menu'
 
 export const state = () => ({})
 
@@ -20,6 +21,7 @@ export const accessorType = getAccessorType({
   mutations,
   actions,
   modules: {
+    menu,
     // Add your submodules here
     // The key (submodule) needs to match the Nuxt namespace (e.g. ~/store/submodule.ts)
   },
