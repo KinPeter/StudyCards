@@ -1,4 +1,4 @@
-import urls from '~/urls'
+import urls from './urls.js'
 
 const env = {
   apiUrl: process.env.NODE_ENV === 'development' ? urls.dev : urls.prod,
@@ -46,7 +46,7 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['@/plugins/composition-api'],
+  plugins: ['@/plugins/composition-api', '@/plugins/services'],
   /*
    ** Nuxt.js dev-modules
    */
