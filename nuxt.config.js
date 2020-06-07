@@ -1,16 +1,32 @@
-import colors from 'vuetify/es5/util/colors'
+import urls from '~/urls'
+
+const env = {
+  apiUrl: process.env.NODE_ENV === 'development' ? urls.dev : urls.prod,
+}
 
 export default {
+  env,
+  server: {
+    port: 3333,
+  },
   mode: 'spa',
   /*
    ** Headers of the page
    */
   head: {
-    titleTemplate: '%s - ' + process.env.npm_package_name,
-    title: process.env.npm_package_name || '',
+    titleTemplate: '%s - StudyCards',
+    title: '',
     meta: [
       { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      {
+        name: 'viewport',
+        content:
+          'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no',
+      },
+      {
+        name: 'mobile-web-app-capable',
+        content: 'yes',
+      },
       {
         hid: 'description',
         name: 'description',
@@ -26,7 +42,7 @@ export default {
   /*
    ** Global CSS
    */
-  css: [],
+  css: ['@/style/index.scss', '@/style/vuetify/overrides.scss'],
   /*
    ** Plugins to load before mounting the App
    */
@@ -55,27 +71,17 @@ export default {
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
-  axios: {},
+  axios: {
+    baseURL: env.apiUrl,
+  },
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
    */
   vuetify: {
-    customVariables: ['~/assets/variables.scss'],
-    theme: {
-      dark: true,
-      themes: {
-        dark: {
-          primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
-          secondary: colors.amber.darken3,
-          info: colors.teal.lighten1,
-          warning: colors.amber.base,
-          error: colors.deepOrange.accent4,
-          success: colors.green.accent3,
-        },
-      },
-    },
+    customVariables: ['~/style/vuetify/variables.scss'],
+    optionsPath: '~/config/vuetify.js',
+    treeShake: true,
   },
   router: {
     // middleware: [ auth ],
