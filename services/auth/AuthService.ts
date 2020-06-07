@@ -1,7 +1,7 @@
 import ApiService from '~/services/api/ApiService'
-import { AuthCredentials } from '~/services/auth/AuthCredentials'
-import { LoginResponse } from '~/services/auth/LoginResponse'
-import { SignUpResponse } from '~/services/auth/SignUpResponse'
+import { AuthCredentials } from '~/services/auth/types/AuthCredentials'
+import { LoginResponse } from '~/services/auth/types/LoginResponse'
+import { SignUpResponse } from '~/services/auth/types/SignUpResponse'
 
 export class AuthService {
   constructor(private api: ApiService) {}

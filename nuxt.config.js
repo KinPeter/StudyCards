@@ -74,6 +74,17 @@ export default {
   axios: {
     baseURL: env.apiUrl,
   },
+  auth: {
+    cookie: false,
+    strategies: {
+      // We use a custom scheme here, implemented in AuthStrategy.ts
+      // Check AuthPluginOptions.ts for details on this configuration
+      custom: {
+        _scheme: '~/services/auth/AuthStrategy.ts',
+        allowedRole: 'USER',
+      },
+    },
+  },
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
@@ -84,7 +95,7 @@ export default {
     treeShake: true,
   },
   router: {
-    // middleware: [ auth ],
+    middleware: ['auth'],
   },
   /*
    ** Build configuration
