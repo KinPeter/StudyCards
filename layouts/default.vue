@@ -42,6 +42,13 @@ export default defineComponent({
           ctx.root.$vuetify.theme.dark = !ctx.root.$vuetify.theme.dark
         },
       },
+      {
+        icon: 'mdi-logout-variant',
+        title: 'Log out',
+        action: () => {
+          ctx.root.$auth.logout()
+        },
+      },
     ]
 
     const routes: Ref<[]> = ref(initRoutes)

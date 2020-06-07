@@ -30,7 +30,8 @@ export default class Strategy {
 
   verifyTokenOrLogout(token: string) {
     const authData = this.fetchAuthData()
-    if (!authData || authData.exp > new Date().getTime()) {
+    const now = new Date().getTime()
+    if (!authData || authData.exp < now) {
       this.logout()
       return
     }
@@ -67,6 +68,9 @@ export default class Strategy {
   public logout() {
     // This is the place to call logout endpoint if there is any
 
+    if (this.$ctx.app.router) {
+      this.$ctx.app.router.push('/login')
+    }
     // Logout locally regardless
     return this.logoutLocally()
   }
@@ -94,6 +98,7 @@ export default class Strategy {
    * Cleans up local state as part of the logout process
    */
   private logoutLocally() {
+    localStorage.removeItem('sc-auth')
     this.unsetAuthorization()
     return this.$auth.reset()
   }
