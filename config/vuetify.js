@@ -5,16 +5,17 @@ export default {
     options: {
       customProperties: true,
     },
-    dark: false,
+    dark: true,
     themes: {
       light: {
-        primary: colors.blue.lighten1,
-        secondary: colors.lime.darken2,
-        accent: colors.blue.lighten1,
-        shades: {
-          base: colors.shades.white,
-        },
-        grey: colors.grey,
+        primary: colors.cyan,
+        secondary: colors.amber.darken2,
+        accent: colors.cyan.darken3,
+      },
+      dark: {
+        primary: colors.cyan.darken4,
+        secondary: colors.amber.darken4,
+        accent: colors.cyan.accent4,
       },
     },
   },
