@@ -12,7 +12,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, Ref, SetupContext } from '@vue/composition-api'
-import NavigationDrawer from '~/components/layouts/NavigationDrawer.vue'
+import NavigationDrawer from '~/components/layouts/NavigationDrawer/NavigationDrawer.vue'
 import AppBar from '~/components/layouts/AppBar.vue'
 
 export default defineComponent({

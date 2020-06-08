@@ -6,11 +6,11 @@ import mutations from '~/store/menu/mutations'
 export default actionTree(
   { state, getters, mutations },
   {
-    showLogOut({ commit }) {
-      commit('setAction', { action: 'logOut', value: true })
+    showPracticeActions({ commit }) {
+      commit('setAction', { action: 'save', value: true })
     },
-    hideLogOut({ commit }) {
-      commit('setAction', { action: 'logOut', value: false })
+    hidePracticeActions({ commit }) {
+      commit('setAction', { action: 'save', value: false })
     },
   }
 )

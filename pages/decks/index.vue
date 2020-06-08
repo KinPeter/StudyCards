@@ -1,5 +1,5 @@
 <template>
-  <div class="decks">
+  <div class="practice">
     Decks page
   </div>
 </template>
@@ -9,11 +9,15 @@ import { defineComponent, SetupContext } from '@vue/composition-api'
 
 export default defineComponent({
   setup(_props, _ctx: SetupContext) {},
+
+  head: {
+    title: 'My Decks',
+  },
 })
 </script>
 
 <style lang="scss" scoped>
-.decks {
+.practice {
   width: 100%;
 }
 </style>
