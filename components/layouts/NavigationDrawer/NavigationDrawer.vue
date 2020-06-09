@@ -14,7 +14,7 @@
         icon="mdi-view-grid"
       />
     </v-list>
-    <template v-if="$store.getters['menu/practiceActions']">
+    <template v-if="$accessor.menu.practiceActions">
       <v-divider></v-divider>
       <v-list>
         <NavigationDrawerItem

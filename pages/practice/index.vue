@@ -15,11 +15,10 @@ import {
 export default defineComponent({
   setup(_props, ctx: SetupContext) {
     onMounted(() => {
-      ctx.root.$store.dispatch('menu/showPracticeActions')
-      // ctx.root.$accessor.menu.showPracticeActions() // FIXME
+      ctx.root.$accessor.menu.showPracticeActions()
     })
     onBeforeUnmount(() => {
-      ctx.root.$store.dispatch('menu/hidePracticeActions')
+      ctx.root.$accessor.menu.hidePracticeActions()
     })
   },
 
