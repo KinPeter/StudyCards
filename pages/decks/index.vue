@@ -5,10 +5,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, SetupContext } from '@vue/composition-api'
+import {
+  defineComponent,
+  onBeforeUnmount,
+  SetupContext,
+} from '@vue/composition-api'
 
 export default defineComponent({
-  setup(_props, _ctx: SetupContext) {},
+  setup(_props, ctx: SetupContext) {
+    setTimeout(() => {
+      ctx.root.$accessor.menu.showDecksActions()
+    }, 100)
+    onBeforeUnmount(() => {
+      ctx.root.$accessor.menu.hideDecksActions()
+    })
+  },
 
   head: {
     title: 'My Decks',

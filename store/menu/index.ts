@@ -3,35 +3,55 @@ import { actionTree, getterTree, mutationTree } from 'nuxt-typed-vuex'
 export const namespaced = true
 
 interface MenuState {
-  actions: { [key: string]: boolean }
+  actions: {
+    decks: { [key: string]: boolean }
+    practice: { [key: string]: boolean }
+  }
 }
 
 const state = (): MenuState => ({
   actions: {
-    save: false,
+    decks: {
+      addNewDeck: false,
+    },
+    practice: {
+      saveProgress: false,
+    },
   },
 })
 
 const getters = getterTree(state, {
+  deckActions(state, _getters, _rootState): boolean {
+    return Object.values(state.actions.decks).some(value => !!value)
+  },
   practiceActions(state, _getters, _rootState): boolean {
-    return Object.values(state.actions).some(value => !!value)
+    return Object.values(state.actions.practice).some(value => !!value)
   },
 })
 
 const mutations = mutationTree(state, {
-  setAction(state, payload: { action: string; value: boolean }) {
-    state.actions[payload.action] = payload.value
+  setDecksAction(state, payload: { action: string; value: boolean }) {
+    state.actions.decks[payload.action] = payload.value
+  },
+  setPracticeAction(state, payload: { action: string; value: boolean }) {
+    state.actions.practice[payload.action] = payload.value
   },
 })
 
 const actions = actionTree(
   { state, getters, mutations },
   {
+    showDecksActions({ commit }) {
+      commit('setDecksAction', { action: 'addNewDeck', value: true })
+    },
+    hideDecksActions({ commit }) {
+      commit('setDecksAction', { action: 'addNewDeck', value: false })
+    },
     showPracticeActions({ commit }) {
-      commit('setAction', { action: 'save', value: true })
+      commit('setPracticeAction', { action: 'saveProgress', value: true })
     },
     hidePracticeActions({ commit }) {
-      commit('setAction', { action: 'save', value: false })
+      commit('setPracticeAction', { action: 'saveProgress', value: false })
     },
   }
 )

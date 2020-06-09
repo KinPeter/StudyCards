@@ -8,15 +8,14 @@
 import {
   defineComponent,
   onBeforeUnmount,
-  onMounted,
   SetupContext,
 } from '@vue/composition-api'
 
 export default defineComponent({
   setup(_props, ctx: SetupContext) {
-    onMounted(() => {
+    setTimeout(() => {
       ctx.root.$accessor.menu.showPracticeActions()
-    })
+    }, 100)
     onBeforeUnmount(() => {
       ctx.root.$accessor.menu.hidePracticeActions()
     })

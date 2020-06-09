@@ -14,6 +14,17 @@
         icon="mdi-view-grid"
       />
     </v-list>
+    <template v-if="$accessor.menu.deckActions">
+      <v-divider></v-divider>
+      <v-list>
+        <NavigationDrawerItem
+          :type="NavigationDrawerItemType.ACTION"
+          @click="onAddNewDeck"
+          title="Add new Deck"
+          icon="mdi-plus"
+        />
+      </v-list>
+    </template>
     <template v-if="$accessor.menu.practiceActions">
       <v-divider></v-divider>
       <v-list>
@@ -85,9 +96,14 @@ export default defineComponent({
       // noop
     }
 
+    const onAddNewDeck = () => {
+      ctx.root.$router.push('/decks/add')
+    }
+
     return {
       NavigationDrawerItemType,
       themeTitle,
+      onAddNewDeck,
       onToggleTheme,
       onLogout,
       onChange,
