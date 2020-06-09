@@ -1,13 +1,18 @@
 <template>
   <div class="add-new-deck">
-    Add new deck page
+    <DeckEditor :new-deck="true" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, SetupContext } from '@vue/composition-api'
+import DeckEditor from '~/components/decks/DeckEditor.vue'
 
 export default defineComponent({
+  components: {
+    DeckEditor,
+  },
+
   setup(_props, _ctx: SetupContext) {},
 
   head: {
