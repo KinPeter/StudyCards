@@ -61,7 +61,7 @@ import { defineComponent, ref, Ref, SetupContext } from '@vue/composition-api'
 
 function validateUrl(url: string): boolean {
   const urlRegex = new RegExp(
-    /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&/=]*)\.tsv$/
+    /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&/=]*)$/
   )
   return urlRegex.test(url)
 }
