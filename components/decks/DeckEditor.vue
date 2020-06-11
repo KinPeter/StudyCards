@@ -1,7 +1,7 @@
 <template>
   <div class="deck-editor">
     <v-card :loading="loading" class="deck-editor__card">
-      <v-form ref="form" v-model="valid" @submit.prevent="onSubmit">
+      <v-form ref="form" v-model="formValid" @submit.prevent="onSubmit">
         <v-card-title>
           {{ newDeck ? 'Add a new Deck' : 'Edit Deck' }}
         </v-card-title>
@@ -44,7 +44,7 @@
         </v-card-text>
         <v-card-actions>
           <v-btn
-            :disabled="!valid || !deckConfirmed"
+            :disabled="!formValid || !deckConfirmed"
             color="primary"
             type="submit"
           >
@@ -76,7 +76,7 @@ export default defineComponent({
 
   setup(props, ctx: SetupContext) {
     const loading: Ref<boolean> = ref(false)
-    const valid: Ref<boolean> = ref(false)
+    const formValid: Ref<boolean> = ref(false)
     const error: Ref<boolean> = ref(false)
     const rules = {
       name: [
@@ -94,11 +94,24 @@ export default defineComponent({
     const deckConfirmed: Ref<boolean> = ref(!props.newDeck)
 
     const validateDeck = async () => {
-      deckConfirmed.value = false
-      await ctx.root.$services.deck.fetch(link.value)
+      if (formValid.value) {
+        deckConfirmed.value = false
+        loading.value = true
+        try {
+          const result = await ctx.root.$services.deck.verify(link.value)
+          if (result > 0) {
+            numberOfCards.value = result
+            deckConfirmed.value = true
+          }
+        } catch (e) {
+          ctx.root.$nuxt.error(e)
+        } finally {
+          loading.value = false
+        }
+      }
     }
 
-    const onSubmit = async () => {
+    const onSubmit = () => {
       loading.value = true
       error.value = false
       try {
@@ -117,7 +130,7 @@ export default defineComponent({
 
     return {
       loading,
-      valid,
+      formValid,
       error,
       rules,
       name,
