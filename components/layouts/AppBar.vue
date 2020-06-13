@@ -3,19 +3,12 @@
     <v-btn @click.stop="onBurgerClick" icon>
       <v-icon>{{ drawerOpen ? 'mdi-chevron-left' : 'mdi-menu' }}</v-icon>
     </v-btn>
-    <v-toolbar-title v-text="title" />
+    <v-toolbar-title v-text="title + ' - StudyCards'" />
   </v-app-bar>
 </template>
 
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  ref,
-  Ref,
-  SetupContext,
-  watch,
-} from '@vue/composition-api'
+import { computed, defineComponent, SetupContext } from '@vue/composition-api'
 
 export default defineComponent({
   props: {
@@ -25,36 +18,22 @@ export default defineComponent({
     },
   },
   setup(_props, ctx: SetupContext) {
-    const routeText: Ref<string> = ref('')
-
     const title = computed(() => {
-      return routeText.value + ' - StudyCards'
-    })
-
-    watch(
-      () => ctx.root.$route,
-      () => {
-        switch (ctx.root.$route.path) {
-          case '/login':
-            routeText.value = 'Login'
-            break
-          case '/decks':
-            routeText.value = 'My Decks'
-            break
-          case '/decks/add':
-            routeText.value = 'New Deck'
-            break
-          case '/decks/edit':
-            routeText.value = 'Edit Deck'
-            break
-          case '/practice':
-            routeText.value = 'Practice'
-            break
-          default:
-            routeText.value = 'N/A'
-        }
+      switch (ctx.root.$route.path) {
+        case '/login':
+          return 'Login'
+        case '/decks':
+          return 'My Decks'
+        case '/decks/add':
+          return 'New Deck'
+        case '/decks/edit':
+          return 'Edit Deck'
+        case '/practice':
+          return 'Practice'
+        default:
+          return 'N/A'
       }
-    )
+    })
 
     const onBurgerClick = () => {
       ctx.emit('burgerClick')
