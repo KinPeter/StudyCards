@@ -1,4 +1,4 @@
-export function shuffle<T>(original: Array<T>): Array<T> {
+export function shuffleArray<T>(original: Array<T>): Array<T> {
   const array = [...original]
   let currentIndex: number = array.length
   let temporaryValue: T

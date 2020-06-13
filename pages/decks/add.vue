@@ -20,9 +20,3 @@ export default defineComponent({
   },
 })
 </script>
-
-<style lang="scss" scoped>
-.add-new-deck {
-  width: 100%;
-}
-</style>

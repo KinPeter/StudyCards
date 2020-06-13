@@ -34,13 +34,14 @@
             </p>
             <p v-else class="text-not-confirmed">
               <v-icon>mdi-alert</v-icon>
-              Deck is not confirmed yet.
+              Deck is not verified yet.
             </p>
           </div>
           <v-checkbox
+            v-if="newDeck"
             v-model="shuffle"
             label="Shuffle cards on first save"
-          ></v-checkbox>
+          />
         </v-card-text>
         <v-card-actions>
           <v-btn
@@ -58,6 +59,9 @@
 
 <script lang="ts">
 import { defineComponent, ref, Ref, SetupContext } from '@vue/composition-api'
+import { createDeckArray } from '~/utils/createDeckArray'
+import { DeckProgress } from '~/services/deck/types/DeckProgress'
+import { shuffleArray } from '~/utils/shuffleArray'
 
 function validateUrl(url: string): boolean {
   const urlRegex = new RegExp(
@@ -77,7 +81,6 @@ export default defineComponent({
   setup(props, ctx: SetupContext) {
     const loading: Ref<boolean> = ref(false)
     const formValid: Ref<boolean> = ref(false)
-    const error: Ref<boolean> = ref(false)
     const rules = {
       name: [
         (v: string) =>
@@ -113,18 +116,32 @@ export default defineComponent({
       }
     }
 
-    const onSubmit = () => {
+    const saveNewDeck = async () => {
+      const progress: DeckProgress = {
+        remaining: createDeckArray(numberOfCards.value),
+        done: [],
+        difficult: [],
+      }
+      if (shuffle.value) {
+        progress.remaining = shuffleArray(progress.remaining)
+      }
+      await ctx.root.$services.deck.save({
+        userId: ctx.root.$auth.user.id,
+        name: name.value,
+        link: link.value,
+        progress: JSON.stringify(progress),
+      })
+    }
+
+    const onSubmit = async () => {
       loading.value = true
-      error.value = false
       try {
-        // await ctx.root.$auth.loginWith('custom', username.value, password.value)
-        // ctx.root.$router.push('/decks')
-      } catch (e) {
-        if (e.response.status === 401) {
-          error.value = true
-        } else {
-          ctx.root.$nuxt.error(e)
+        if (props.newDeck) {
+          await saveNewDeck()
         }
+        ctx.root.$router.push('/decks')
+      } catch (e) {
+        ctx.root.$nuxt.error(e)
       } finally {
         loading.value = false
       }
@@ -133,7 +150,6 @@ export default defineComponent({
     return {
       loading,
       formValid,
-      error,
       rules,
       name,
       link,
