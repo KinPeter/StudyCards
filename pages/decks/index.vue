@@ -13,6 +13,7 @@
         v-for="deck in decks"
         :key="deck.id"
         :deck="deck"
+        @deleted="loadDecks"
         class="decks__panel"
       />
     </v-expansion-panels>
@@ -63,6 +64,7 @@ export default defineComponent({
     return {
       loading,
       decks,
+      loadDecks,
     }
   },
 
