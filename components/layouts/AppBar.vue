@@ -8,11 +8,14 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, SetupContext } from '@vue/composition-api'
-
-interface Props {
-  drawerOpen: boolean
-}
+import {
+  computed,
+  defineComponent,
+  ref,
+  Ref,
+  SetupContext,
+  watch,
+} from '@vue/composition-api'
 
 export default defineComponent({
   props: {
@@ -22,12 +25,41 @@ export default defineComponent({
     },
   },
   setup(_props, ctx: SetupContext) {
+    const routeText: Ref<string> = ref('')
+
     const title = computed(() => {
-      return 'StudyCards'
+      return routeText.value + ' - StudyCards'
     })
+
+    watch(
+      () => ctx.root.$route,
+      () => {
+        switch (ctx.root.$route.path) {
+          case '/login':
+            routeText.value = 'Login'
+            break
+          case '/decks':
+            routeText.value = 'My Decks'
+            break
+          case '/decks/add':
+            routeText.value = 'New Deck'
+            break
+          case '/decks/edit':
+            routeText.value = 'Edit Deck'
+            break
+          case '/practice':
+            routeText.value = 'Practice'
+            break
+          default:
+            routeText.value = 'N/A'
+        }
+      }
+    )
+
     const onBurgerClick = () => {
       ctx.emit('burgerClick')
     }
+
     return {
       title,
       onBurgerClick,
