@@ -121,6 +121,7 @@ export default defineComponent({
         remaining: createDeckArray(numberOfCards.value),
         done: [],
         difficult: [],
+        lastUsed: new Date().toISOString(),
       }
       if (shuffle.value) {
         progress.remaining = shuffleArray(progress.remaining)
