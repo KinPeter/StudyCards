@@ -98,7 +98,9 @@ export default defineComponent({
         deckConfirmed.value = false
         loading.value = true
         try {
-          const result = await ctx.root.$services.deck.verify(link.value)
+          const result = await ctx.root.$services.deck.verifyWordList(
+            link.value
+          )
           if (result > 0) {
             numberOfCards.value = result
             deckConfirmed.value = true
