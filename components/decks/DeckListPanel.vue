@@ -30,6 +30,7 @@
       <template v-slot:actions>
         <v-btn
           v-if="progress.remaining.length"
+          :loading="practiceLoading"
           @click="onPracticeClick"
           icon
           x-large
@@ -48,6 +49,7 @@
     >
       <v-btn
         @click="onPracticeClick"
+        :loading="practiceLoading"
         :disabled="!progress.remaining.length"
         outlined
         width="48%"
@@ -117,6 +119,7 @@ export default defineComponent({
     const confirmationType: Ref<ConfirmationType> = ref('reset')
     const progress: Ref<DeckProgress> = ref(parseProgress(props.deck.progress))
     const deleteLoading: Ref<boolean> = ref(false)
+    const practiceLoading: Ref<boolean> = ref(false)
 
     const numberOfCards = computed(() => {
       return (
@@ -141,9 +144,19 @@ export default defineComponent({
       }
     }
 
-    const onPracticeClick = () => {
-      // TODO: load deck to store
-      ctx.root.$router.push('/practice')
+    const onPracticeClick = async () => {
+      practiceLoading.value = true
+      try {
+        await ctx.root.$accessor.decks.loadForPractice({
+          deck: props.deck,
+          deckService: ctx.root.$services.deck,
+        })
+        ctx.root.$router.push('/practice')
+      } catch (e) {
+        ctx.root.$nuxt.error(e)
+      } finally {
+        practiceLoading.value = false
+      }
     }
 
     const onResetClick = () => {
@@ -154,7 +167,7 @@ export default defineComponent({
     }
 
     const onEditClick = () => {
-      // TODO: load deck to store
+      ctx.root.$accessor.decks.loadForEdit(props.deck)
       ctx.root.$router.push('/decks/edit')
     }
 
@@ -181,6 +194,7 @@ export default defineComponent({
       progress,
       numberOfCards,
       deleteLoading,
+      practiceLoading,
       onPracticeClick,
       onResetClick,
       onEditClick,

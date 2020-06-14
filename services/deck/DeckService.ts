@@ -25,6 +25,11 @@ export class DeckService {
     }
   }
 
+  async getWordList(url: string): Promise<WordList> {
+    const file = await this.fetchWordList(url)
+    return convertToWordList(file)
+  }
+
   getOne(userId: string, deckId: string): Promise<DeckResource> {
     return this.api.get<DeckResource>(`/decks/${userId}/${deckId}`)
   }
