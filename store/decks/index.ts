@@ -37,8 +37,18 @@ const state = (): DecksState => ({
 
 const getters = getterTree(state, {
   hasLoadedDeck(state): boolean {
+    return state.loadedDeck.id !== ''
+  },
+  hasLoadedDeckAndWordList(state): boolean {
     return (
       state.loadedDeck.id !== '' && state.loadedDeck.wordList.front.length !== 0
+    )
+  },
+  numberOfCards(state): number {
+    return (
+      state.loadedDeck.progress.remaining.length +
+      state.loadedDeck.progress.done.length +
+      state.loadedDeck.progress.difficult.length
     )
   },
 })

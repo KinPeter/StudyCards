@@ -1,6 +1,16 @@
 <template>
   <div class="practice">
-    Practice page
+    <div
+      v-if="!$accessor.decks.hasLoadedDeckAndWordList"
+      class="practice__not-loaded"
+    >
+      <v-icon>mdi-emoticon-sad-outline</v-icon>
+      <p>No loaded deck.</p>
+      <v-btn text color="secondary" nuxt to="/decks">Go to My Decks!</v-btn>
+    </div>
+    <div v-else class="practice-wrapper">
+      Practice page
+    </div>
   </div>
 </template>
 
@@ -28,7 +38,12 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.practice {
-  width: 100%;
+.practice__not-loaded {
+  text-align: center;
+  margin-top: 10vh;
+
+  .v-icon {
+    margin-bottom: 1rem;
+  }
 }
 </style>

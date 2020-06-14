@@ -19,6 +19,7 @@
           <v-text-field
             v-model="link"
             :rules="rules.url"
+            @input="deckConfirmed = false"
             @change="validateDeck"
             label="Link"
             type="url"
@@ -96,6 +97,13 @@ export default defineComponent({
     const numberOfCards: Ref<number> = ref(0)
     const deckConfirmed: Ref<boolean> = ref(!props.newDeck)
 
+    const loadDeckOnStart = () => {
+      const loaded = ctx.root.$accessor.decks.loadedDeck
+      name.value = loaded.name
+      link.value = loaded.link
+      numberOfCards.value = ctx.root.$accessor.decks.numberOfCards
+    }
+
     const validateDeck = async () => {
       if (formValid.value) {
         deckConfirmed.value = false
@@ -134,11 +142,24 @@ export default defineComponent({
       })
     }
 
+    const updateDeck = async () => {
+      const loaded = ctx.root.$accessor.decks.loadedDeck
+      await ctx.root.$services.deck.update({
+        id: loaded.id,
+        userId: ctx.root.$auth.user.id,
+        name: name.value,
+        link: link.value,
+        progress: JSON.stringify(loaded.progress),
+      })
+    }
+
     const onSubmit = async () => {
       loading.value = true
       try {
         if (props.newDeck) {
           await saveNewDeck()
+        } else {
+          await updateDeck()
         }
         ctx.root.$router.push('/decks')
       } catch (e) {
@@ -146,6 +167,12 @@ export default defineComponent({
       } finally {
         loading.value = false
       }
+    }
+
+    if (!props.newDeck && ctx.root.$accessor.decks.hasLoadedDeck) {
+      loadDeckOnStart()
+    } else if (!props.newDeck && !ctx.root.$accessor.decks.hasLoadedDeck) {
+      ctx.root.$nuxt.error(new Error('How did I get there?'))
     }
 
     return {
