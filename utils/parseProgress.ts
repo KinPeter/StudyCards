@@ -6,7 +6,8 @@ export function parseProgress(progressJsonString: string): DeckProgress {
     !('remaining' in progress) ||
     !('done' in progress) ||
     !('difficult' in progress) ||
-    !('lastUsed' in progress)
+    !('lastUsed' in progress) ||
+    !('shuffled' in progress)
   ) {
     throw new Error('Invalid progress JSON')
   }

@@ -5,6 +5,7 @@ const mockProgress1 = JSON.stringify({
   done: [7, 8, 9, 10],
   difficult: [],
   lastUsed: new Date('2020.01.04.').toISOString(),
+  shuffled: false,
 })
 const mockProgress2 = JSON.stringify({
   remaining: [1, 2, 3, 4, 5, 6],
@@ -19,7 +20,8 @@ describe('parseProgress', () => {
     expect('done' in progress).toBeTruthy()
     expect('difficult' in progress).toBeTruthy()
     expect('lastUsed' in progress).toBeTruthy()
-    expect(Object.keys(progress).length).toEqual(4)
+    expect('shuffled' in progress).toBeTruthy()
+    expect(Object.keys(progress).length).toEqual(5)
     expect(typeof progress.lastUsed).toBe('string')
     expect(Array.isArray(progress.remaining)).toBeTruthy()
     expect(Array.isArray(progress.done)).toBeTruthy()

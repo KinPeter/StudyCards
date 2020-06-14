@@ -130,6 +130,7 @@ export default defineComponent({
         done: [],
         difficult: [],
         lastUsed: new Date().toISOString(),
+        shuffled: shuffle.value,
       }
       if (shuffle.value) {
         progress.remaining = shuffleArray(progress.remaining)

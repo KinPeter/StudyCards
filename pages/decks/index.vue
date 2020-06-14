@@ -13,7 +13,7 @@
         v-for="deck in decks"
         :key="deck.id"
         :deck="deck"
-        @deleted="loadDecks"
+        @updated="loadDecks"
         class="decks__panel"
       />
     </v-expansion-panels>
@@ -30,6 +30,7 @@ import {
 } from '@vue/composition-api'
 import { DeckResource } from '~/services/deck/types/DeckResource'
 import DeckListPanel from '~/components/decks/DeckListPanel.vue'
+import { sortDecks } from '~/utils/sortDecks'
 
 export default defineComponent({
   components: {
@@ -43,9 +44,10 @@ export default defineComponent({
     const loadDecks = async () => {
       loading.value = true
       try {
-        decks.value = await ctx.root.$services.deck.getAll(
+        const response = await ctx.root.$services.deck.getAll(
           ctx.root.$auth.user.id
         )
+        decks.value = sortDecks(response)
       } catch (e) {
         ctx.root.$nuxt.error(e)
       } finally {

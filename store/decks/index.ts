@@ -27,6 +27,7 @@ const state = (): DecksState => ({
       done: [],
       difficult: [],
       lastUsed: '',
+      shuffled: false,
     },
     wordList: {
       front: [],

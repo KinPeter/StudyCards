@@ -60,6 +60,7 @@
       </v-btn>
       <v-btn
         @click="onResetClick"
+        :loading="resetLoading"
         :disabled="progress.remaining.length === numberOfCards"
         outlined
         width="48%"
@@ -102,6 +103,8 @@ import {
 import { DeckResource } from '~/services/deck/types/DeckResource'
 import { DeckProgress } from '~/services/deck/types/DeckProgress'
 import { parseProgress } from '~/utils/parseProgress'
+import { createDeckArray } from '~/utils/createDeckArray'
+import { shuffleArray } from '~/utils/shuffleArray'
 
 type ConfirmationType = 'reset' | 'delete'
 
@@ -119,6 +122,7 @@ export default defineComponent({
     const confirmationType: Ref<ConfirmationType> = ref('reset')
     const progress: Ref<DeckProgress> = ref(parseProgress(props.deck.progress))
     const deleteLoading: Ref<boolean> = ref(false)
+    const resetLoading: Ref<boolean> = ref(false)
     const practiceLoading: Ref<boolean> = ref(false)
 
     const numberOfCards = computed(() => {
@@ -136,11 +140,38 @@ export default defineComponent({
           ctx.root.$auth.user.id,
           props.deck.id
         )
-        ctx.emit('deleted', props.deck.id)
+        ctx.emit('updated')
       } catch (e) {
         ctx.root.$nuxt.error(e)
       } finally {
         deleteLoading.value = false
+      }
+    }
+
+    const resetAndSave = async () => {
+      resetLoading.value = true
+      try {
+        let array = createDeckArray(numberOfCards.value)
+        const progress = parseProgress(props.deck.progress)
+        if (progress.shuffled) {
+          array = shuffleArray(array)
+        }
+        progress.remaining = array
+        progress.difficult = []
+        progress.done = []
+        progress.lastUsed = new Date().toISOString()
+        await ctx.root.$services.deck.update({
+          id: props.deck.id,
+          userId: ctx.root.$auth.user.id,
+          name: props.deck.name,
+          link: props.deck.link,
+          progress: JSON.stringify(progress),
+        })
+        ctx.emit('updated')
+      } catch (e) {
+        ctx.root.$nuxt.error(e)
+      } finally {
+        resetLoading.value = false
       }
     }
 
@@ -181,6 +212,8 @@ export default defineComponent({
       needConfirmation.value = false
       if (confirmationType.value === 'delete') {
         deleteDeck()
+      } else {
+        resetAndSave()
       }
     }
 
@@ -195,6 +228,7 @@ export default defineComponent({
       numberOfCards,
       deleteLoading,
       practiceLoading,
+      resetLoading,
       onPracticeClick,
       onResetClick,
       onEditClick,

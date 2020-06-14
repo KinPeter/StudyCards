@@ -3,4 +3,5 @@ export interface DeckProgress {
   done: number[]
   difficult: number[]
   lastUsed: string
+  shuffled: boolean
 }
