@@ -6,6 +6,7 @@ import {
 } from 'nuxt-typed-vuex'
 import * as menu from '~/store/menu'
 import * as decks from '~/store/decks'
+import * as saveIndicator from '~/store/saveIndicator'
 
 export const state = () => ({})
 
@@ -24,6 +25,7 @@ export const accessorType = getAccessorType({
   modules: {
     menu,
     decks,
+    saveIndicator,
     // Add your submodules here
     // The key (submodule) needs to match the Nuxt namespace (e.g. ~/store/submodule.ts)
   },

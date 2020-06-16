@@ -4,13 +4,18 @@
       <v-icon>{{ drawerOpen ? 'mdi-chevron-left' : 'mdi-menu' }}</v-icon>
     </v-btn>
     <v-toolbar-title v-text="title + ' - StudyCards'" />
+    <SaveIndicator />
   </v-app-bar>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, SetupContext } from '@vue/composition-api'
+import SaveIndicator from '~/components/layouts/SaveIndicator.vue'
 
 export default defineComponent({
+  components: {
+    SaveIndicator,
+  },
   props: {
     drawerOpen: {
       type: Boolean,

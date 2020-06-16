@@ -59,6 +59,7 @@
 import { computed, defineComponent, SetupContext } from '@vue/composition-api'
 import NavigationDrawerItem from '~/components/layouts/NavigationDrawer/NavigationDrawerItem.vue'
 import { NavigationDrawerItemType } from '~/components/layouts/NavigationDrawer/NavigationDrawerItemType'
+import { DeckResource } from '~/services/deck/types/DeckResource'
 
 interface Props {
   open: boolean
@@ -92,8 +93,23 @@ export default defineComponent({
       ctx.emit('update:open', opened)
     }
 
-    const onSave = () => {
-      // noop
+    const onSave = async () => {
+      ctx.root.$accessor.saveIndicator.showLoading()
+      try {
+        const loadedDeck = ctx.root.$accessor.decks.loadedDeck
+        const deckToSave: DeckResource = {
+          id: loadedDeck.id,
+          userId: ctx.root.$auth.user.id,
+          name: loadedDeck.name,
+          link: loadedDeck.link,
+          progress: JSON.stringify(loadedDeck.progress),
+        }
+        await ctx.root.$services.deck.update(deckToSave)
+        ctx.root.$accessor.saveIndicator.hideLoading()
+        ctx.root.$accessor.saveIndicator.showSaved()
+      } catch (_e) {
+        ctx.root.$accessor.saveIndicator.showError()
+      }
     }
 
     const onAddNewDeck = () => {
