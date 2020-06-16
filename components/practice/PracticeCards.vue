@@ -4,8 +4,12 @@
       v-for="(card, index) in cards"
       :key="index"
       :word="card.word"
+      :index="index"
       :correct="card.correct"
+      :success="index === successIndex"
+      :failed="index === failedIndex"
       @cardClick="onClick"
+      class="practice-cards__card"
     />
   </div>
 </template>
@@ -14,6 +18,7 @@
 import {
   computed,
   defineComponent,
+  ref,
   Ref,
   SetupContext,
 } from '@vue/composition-api'
@@ -37,6 +42,8 @@ export default defineComponent({
 
   setup(props, ctx: SetupContext) {
     const { saveProgress } = useSaveProgress(ctx)
+    const successIndex: Ref<number> = ref(-1)
+    const failedIndex: Ref<number> = ref(-1)
 
     const cards: Readonly<Ref<readonly Card[]>> = computed(() => {
       const words = ctx.root.$accessor.decks.loadedDeck.wordList.back
@@ -62,17 +69,29 @@ export default defineComponent({
       }
     }
 
-    const onClick = (isCorrect: boolean) => {
-      if (isCorrect) {
-        ctx.root.$accessor.decks.practiceCorrectAnswer()
+    const onClick = (event: { correct: boolean; index: number }) => {
+      if (event.correct) {
+        successIndex.value = event.index
+        setTimeout(() => {
+          ctx.root.$accessor.decks.practiceCorrectAnswer()
+          successIndex.value = -1
+        }, 1000)
       } else {
-        ctx.root.$accessor.decks.practiceIncorrectAnswer()
+        successIndex.value = cards.value.findIndex(card => card.correct)
+        failedIndex.value = event.index
+        setTimeout(() => {
+          ctx.root.$accessor.decks.practiceIncorrectAnswer()
+          successIndex.value = -1
+          failedIndex.value = -1
+        }, 3000)
       }
       triggerAutoSave()
     }
 
     return {
       cards,
+      successIndex,
+      failedIndex,
       onClick,
     }
   },
@@ -82,5 +101,36 @@ export default defineComponent({
 <style lang="scss" scoped>
 .practice-cards {
   width: 100%;
+  height: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.practice-cards__card {
+  width: 100%;
+  height: 100%;
+  min-height: 150px;
+  margin: 4px 0 4px;
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+@media (min-width: 700px) {
+  .practice-cards {
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .practice-cards__card {
+    max-width: calc(50% - 8px);
+    margin: 4px;
+    height: 150px;
+  }
 }
 </style>

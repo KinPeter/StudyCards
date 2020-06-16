@@ -70,6 +70,7 @@ export default defineComponent({
 
 .practice-wrapper {
   max-width: 700px;
+  height: 100%;
   margin: 0 auto;
 }
 </style>

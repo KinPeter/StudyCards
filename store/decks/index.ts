@@ -74,9 +74,9 @@ const mutations = mutationTree(state, {
     } else {
       elem = state.loadedDeck.progress.difficult.shift()
     }
-    if (elem && !payload.toDifficult) {
+    if (elem !== undefined && !payload.toDifficult) {
       state.loadedDeck.progress.done.push(elem)
-    } else if (elem && payload.toDifficult) {
+    } else if (elem !== undefined && payload.toDifficult) {
       state.loadedDeck.progress.difficult.push(elem)
     }
   },
