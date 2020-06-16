@@ -29,6 +29,26 @@
       <v-divider></v-divider>
       <v-list>
         <NavigationDrawerItem
+          v-if="
+            !$accessor.decks.isShowingDifficult &&
+            $accessor.decks.loadedDeck.progress.difficult.length
+          "
+          :type="NavigationDrawerItemType.ACTION"
+          @click="$accessor.decks.showDifficult"
+          title="Difficult words"
+          icon="mdi-head-snowflake"
+        />
+        <NavigationDrawerItem
+          v-if="
+            $accessor.decks.isShowingDifficult &&
+            $accessor.decks.loadedDeck.progress.remaining.length
+          "
+          :type="NavigationDrawerItemType.ACTION"
+          @click="$accessor.decks.showRemaining"
+          title="Back to progress"
+          icon="mdi-progress-check"
+        />
+        <NavigationDrawerItem
           :type="NavigationDrawerItemType.ACTION"
           @click="onSave"
           title="Save progress"

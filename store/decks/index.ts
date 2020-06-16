@@ -15,6 +15,7 @@ interface DecksState {
     progress: DeckProgress
     wordList: WordList
   }
+  isShowingDifficult: boolean
 }
 
 const state = (): DecksState => ({
@@ -34,6 +35,7 @@ const state = (): DecksState => ({
       back: [],
     },
   },
+  isShowingDifficult: false,
 })
 
 const getters = getterTree(state, {
@@ -50,6 +52,12 @@ const getters = getterTree(state, {
       state.loadedDeck.progress.remaining.length +
       state.loadedDeck.progress.done.length +
       state.loadedDeck.progress.difficult.length
+    )
+  },
+  isDeckFinished(state): boolean {
+    return (
+      !state.loadedDeck.progress.difficult.length &&
+      !state.loadedDeck.progress.remaining.length
     )
   },
 })
@@ -80,6 +88,9 @@ const mutations = mutationTree(state, {
       state.loadedDeck.progress.difficult.push(elem)
     }
   },
+  setShowingDifficult(state, value: boolean) {
+    state.isShowingDifficult = value
+  },
 })
 
 const actions = actionTree(
@@ -102,6 +113,18 @@ const actions = actionTree(
     },
     practiceIncorrectAnswer({ commit }) {
       commit('transferCard', { fromDifficult: false, toDifficult: true })
+    },
+    difficultCorrectAnswer({ commit }) {
+      commit('transferCard', { fromDifficult: true, toDifficult: false })
+    },
+    difficultIncorrectAnswer({ commit }) {
+      commit('transferCard', { fromDifficult: true, toDifficult: true })
+    },
+    showDifficult({ commit }) {
+      commit('setShowingDifficult', true)
+    },
+    showRemaining({ commit }) {
+      commit('setShowingDifficult', false)
     },
   }
 )

@@ -61,7 +61,7 @@ export default defineComponent({
     let counterToSave = 0
 
     const triggerAutoSave = async () => {
-      if (counterToSave >= 5) {
+      if (counterToSave >= 5 || ctx.root.$accessor.decks.isDeckFinished) {
         const result = await saveProgress()
         counterToSave = result.success ? 0 : counterToSave + 1
       } else {
@@ -73,19 +73,28 @@ export default defineComponent({
       if (event.correct) {
         successIndex.value = event.index
         setTimeout(() => {
-          ctx.root.$accessor.decks.practiceCorrectAnswer()
+          if (ctx.root.$accessor.decks.isShowingDifficult) {
+            ctx.root.$accessor.decks.difficultCorrectAnswer()
+          } else {
+            ctx.root.$accessor.decks.practiceCorrectAnswer()
+          }
           successIndex.value = -1
+          triggerAutoSave()
         }, 1000)
       } else {
         successIndex.value = cards.value.findIndex(card => card.correct)
         failedIndex.value = event.index
         setTimeout(() => {
-          ctx.root.$accessor.decks.practiceIncorrectAnswer()
+          if (ctx.root.$accessor.decks.isShowingDifficult) {
+            ctx.root.$accessor.decks.difficultIncorrectAnswer()
+          } else {
+            ctx.root.$accessor.decks.practiceIncorrectAnswer()
+          }
           successIndex.value = -1
           failedIndex.value = -1
+          triggerAutoSave()
         }, 3000)
       }
-      triggerAutoSave()
     }
 
     return {
