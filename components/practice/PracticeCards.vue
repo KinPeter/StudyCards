@@ -21,6 +21,7 @@ import PracticeCard from '~/components/practice/PracticeCard.vue'
 import { Card } from '~/components/practice/Card'
 import { getRandomNumbersArray } from '~/utils/getRandomNumbersArray'
 import { shuffleArray } from '~/utils/shuffleArray'
+import { useSaveProgress } from '~/components/practice/useSaveProgress'
 
 export default defineComponent({
   components: {
@@ -35,6 +36,8 @@ export default defineComponent({
   },
 
   setup(props, ctx: SetupContext) {
+    const { saveProgress } = useSaveProgress(ctx)
+
     const cards: Readonly<Ref<readonly Card[]>> = computed(() => {
       const words = ctx.root.$accessor.decks.loadedDeck.wordList.back
       const allAnswers = shuffleArray(
@@ -48,12 +51,24 @@ export default defineComponent({
       })
     })
 
+    let counterToSave = 0
+
+    const triggerAutoSave = async () => {
+      if (counterToSave >= 5) {
+        const result = await saveProgress()
+        counterToSave = result.success ? 0 : counterToSave + 1
+      } else {
+        counterToSave++
+      }
+    }
+
     const onClick = (isCorrect: boolean) => {
       if (isCorrect) {
         ctx.root.$accessor.decks.practiceCorrectAnswer()
       } else {
         ctx.root.$accessor.decks.practiceIncorrectAnswer()
       }
+      triggerAutoSave()
     }
 
     return {
