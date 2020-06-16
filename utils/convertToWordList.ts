@@ -11,8 +11,8 @@ export function convertToWordList(text: string): WordList {
     if (wordPair.length < 2) {
       throw new Error('Empty or corrupted file!')
     }
-    wordList.front.push(wordPair[0])
-    wordList.back.push(wordPair[1])
+    wordList.front.push(wordPair[1])
+    wordList.back.push(wordPair[0])
   })
   return wordList
 }

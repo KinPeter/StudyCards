@@ -64,6 +64,22 @@ const mutations = mutationTree(state, {
   loadWordList(state, wordList: WordList) {
     state.loadedDeck.wordList = wordList
   },
+  transferCard(
+    state,
+    payload: { fromDifficult: boolean; toDifficult: boolean }
+  ) {
+    let elem: number | undefined
+    if (!payload.fromDifficult) {
+      elem = state.loadedDeck.progress.remaining.shift()
+    } else {
+      elem = state.loadedDeck.progress.difficult.shift()
+    }
+    if (elem && !payload.toDifficult) {
+      state.loadedDeck.progress.done.push(elem)
+    } else if (elem && payload.toDifficult) {
+      state.loadedDeck.progress.difficult.push(elem)
+    }
+  },
 })
 
 const actions = actionTree(
@@ -80,6 +96,12 @@ const actions = actionTree(
       commit('loadDeckData', deck)
       const wordList = await deckService.getWordList(deck.link)
       commit('loadWordList', wordList)
+    },
+    practiceCorrectAnswer({ commit }) {
+      commit('transferCard', { fromDifficult: false, toDifficult: false })
+    },
+    practiceIncorrectAnswer({ commit }) {
+      commit('transferCard', { fromDifficult: false, toDifficult: true })
     },
   }
 )
