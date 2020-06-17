@@ -1,22 +1,19 @@
 # study-cards
 
-> Study vocabulary using cards
+Mobile first web app to study vocabulary using flashcards.
 
-## Build Setup
+### Features:
+* Basic authentication
+* Loading decks with word lists from TSV files
+* Practice mode with quiz-like UI
+* Progress saved on server
+* Autosave feature
+* Dark and light themes
 
-```bash
-# install dependencies
-$ npm install
-
-# serve with hot reload at localhost:3000
-$ npm run dev
-
-# build for production and launch server
-$ npm run build
-$ npm run start
-
-# generate static project
-$ npm run generate
-```
-
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+### Technologies used:
+* Vue with NUXT
+* TypeScript
+* Composition API
+* Typed Vuex + Services
+* Vuetify for UI
+* NestJS / MongoDB backend (Repo [here](https://github.com/KinPeter/StudyCards-Backend))
