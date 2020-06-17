@@ -119,8 +119,7 @@ export default defineComponent({
 
 .practice-cards__card {
   width: 100%;
-  height: 100%;
-  min-height: 150px;
+  height: calc((100vh - 214px) / 4);
   margin: 4px 0 4px;
   flex-grow: 1;
   display: flex;

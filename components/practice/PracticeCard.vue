@@ -66,8 +66,9 @@ export default defineComponent({
 })
 </script>
 
-<!--<style lang="scss" scoped>-->
-<!--.card {-->
-<!--  width: 100%;-->
-<!--}-->
-<!--</style>-->
+<style lang="scss" scoped>
+.practice-card .v-card__title {
+  word-break: keep-all;
+  font-family: 'Noto Serif KR', serif;
+}
+</style>

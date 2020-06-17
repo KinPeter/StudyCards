@@ -1,5 +1,5 @@
 <template>
-  <div class="practice">
+  <div class="practice-wrapper">
     <div
       v-if="!$accessor.decks.hasLoadedDeckAndWordList"
       class="practice__warning"
@@ -48,9 +48,14 @@
       </v-btn>
     </div>
 
-    <div v-else class="practice-wrapper">
-      {{ currentWord }}
+    <div v-else class="practice">
+      <v-card class="practice__top-card">
+        <v-card-text :class="currentWordClass" class="practice__current-word">
+          {{ currentWord }}
+        </v-card-text>
+      </v-card>
       <PracticeCards :current="currentIndex" />
+      <ProgressCard />
     </div>
   </div>
 </template>
@@ -65,10 +70,12 @@ import {
   SetupContext,
 } from '@vue/composition-api'
 import PracticeCards from '~/components/practice/PracticeCards.vue'
+import ProgressCard from '~/components/practice/ProgressCard.vue'
 
 export default defineComponent({
   components: {
     PracticeCards,
+    ProgressCard,
   },
 
   setup(_props, ctx: SetupContext) {
@@ -89,6 +96,12 @@ export default defineComponent({
       return ctx.root.$accessor.decks.isShowingDifficult
         ? words.front[progress.value.difficult[0]]
         : words.front[progress.value.remaining[0]]
+    })
+
+    const currentWordClass = computed(() => {
+      return ctx.root.$accessor.decks.isShowingDifficult
+        ? 'practice__current-word_difficult'
+        : 'practice__current-word_remaining'
     })
 
     const onBackToRemaining = () => {
@@ -113,6 +126,7 @@ export default defineComponent({
       progress,
       currentIndex,
       currentWord,
+      currentWordClass,
       showNoMoreCards,
       onBackToRemaining,
       onShowDifficult,
@@ -135,9 +149,41 @@ export default defineComponent({
   }
 }
 
-.practice-wrapper {
+.practice {
   max-width: 700px;
   height: 100%;
   margin: 0 auto;
+}
+
+.practice__top-card {
+  margin: -12px -12px 4px;
+  min-width: calc(100% + 24px);
+  min-height: 76px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.practice__current-word {
+  text-align: center;
+  word-wrap: break-spaces;
+  word-break: keep-all;
+  font-weight: bold;
+
+  &_remaining {
+    color: var(--v-warning-base) !important;
+  }
+
+  &_difficult {
+    color: var(--v-error-base) !important;
+  }
+}
+
+@media (min-width: 700px) {
+  .practice__top-card {
+    margin: 0 4px 4px;
+    min-width: initial;
+    min-height: initial;
+  }
 }
 </style>

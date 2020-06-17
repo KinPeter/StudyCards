@@ -52,6 +52,10 @@ export default {
         size: '16x16',
         href: '/favicon-16x16.png',
       },
+      {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/css?family=Noto+Serif+KR:400,600',
+      },
     ],
   },
   /*
