@@ -48,7 +48,10 @@
       </v-btn>
     </div>
 
-    <div v-else class="practice">
+    <div
+      v-if="$accessor.decks.hasLoadedDeckAndWordList && !showNoMoreCards"
+      class="practice"
+    >
       <v-card class="practice__top-card">
         <v-card-text :class="currentWordClass" class="practice__current-word">
           {{ currentWord }}
