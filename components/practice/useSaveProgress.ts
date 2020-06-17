@@ -5,6 +5,7 @@ export function useSaveProgress(ctx: SetupContext) {
   async function saveProgress(): Promise<{ success: boolean }> {
     ctx.root.$accessor.saveIndicator.showLoading()
     try {
+      ctx.root.$accessor.decks.updateLastUsed()
       const loadedDeck = ctx.root.$accessor.decks.loadedDeck
       const deckToSave: DeckResource = {
         id: loadedDeck.id,

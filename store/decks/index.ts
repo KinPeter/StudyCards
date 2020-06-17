@@ -91,6 +91,9 @@ const mutations = mutationTree(state, {
   setShowingDifficult(state, value: boolean) {
     state.isShowingDifficult = value
   },
+  setLastUsed(state, value: string) {
+    state.loadedDeck.progress.lastUsed = value
+  },
 })
 
 const actions = actionTree(
@@ -125,6 +128,9 @@ const actions = actionTree(
     },
     showRemaining({ commit }) {
       commit('setShowingDifficult', false)
+    },
+    updateLastUsed({ commit }) {
+      commit('setLastUsed', new Date().toISOString())
     },
   }
 )
