@@ -3,7 +3,7 @@
     <v-btn @click.stop="onBurgerClick" icon>
       <v-icon>{{ drawerOpen ? 'mdi-chevron-left' : 'mdi-menu' }}</v-icon>
     </v-btn>
-    <v-toolbar-title v-text="title + ' - StudyCards'" />
+    <v-toolbar-title v-text="title + 'StudyCards'" />
     <SaveIndicator />
   </v-app-bar>
 </template>
@@ -26,17 +26,17 @@ export default defineComponent({
     const title = computed(() => {
       switch (ctx.root.$route.path) {
         case '/login':
-          return 'Login'
+          return 'Login - '
         case '/decks':
-          return 'My Decks'
+          return 'My Decks - '
         case '/decks/add':
-          return 'New Deck'
+          return 'New Deck - '
         case '/decks/edit':
-          return 'Edit Deck'
+          return 'Edit Deck - '
         case '/practice':
-          return 'Practice'
+          return 'Practice - '
         default:
-          return 'N/A'
+          return ''
       }
     })
 
