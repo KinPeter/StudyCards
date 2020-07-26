@@ -2,6 +2,8 @@
 
 Mobile first web app to study vocabulary using flashcards.
 
+![study cards gif](https://stuff.p-kin.com/screentogif/studycards.gif)
+
 ### Features:
 * Basic authentication
 * Loading decks with word lists from TSV files
