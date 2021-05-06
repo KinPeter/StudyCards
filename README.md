@@ -8,6 +8,7 @@ Mobile first web app to study vocabulary using flashcards.
 * Basic authentication
 * Loading decks with word lists from TSV files
 * Practice mode with quiz-like UI
+* Text-to-Speech: reading out the words
 * Progress saved on server
 * Autosave feature
 * Dark and light themes

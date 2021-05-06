@@ -7,6 +7,7 @@ import {
 import * as menu from '~/store/menu'
 import * as decks from '~/store/decks'
 import * as saveIndicator from '~/store/saveIndicator'
+import * as sound from '~/store/sound'
 
 export const state = () => ({})
 
@@ -26,6 +27,7 @@ export const accessorType = getAccessorType({
     menu,
     decks,
     saveIndicator,
+    sound,
     // Add your submodules here
     // The key (submodule) needs to match the Nuxt namespace (e.g. ~/store/submodule.ts)
   },

@@ -69,18 +69,30 @@ export default defineComponent({
       }
     }
 
-    const onClick = (event: { correct: boolean; index: number }) => {
+    const onClick = (event: {
+      correct: boolean
+      index: number
+      word: string
+    }) => {
+      const hasSound =
+        ctx.root.$services.tts.hasTts && ctx.root.$accessor.sound.isOn
+      if (hasSound) {
+        ctx.root.$services.tts.speak(event.word)
+      }
       if (event.correct) {
         successIndex.value = event.index
-        setTimeout(() => {
-          if (ctx.root.$accessor.decks.isShowingDifficult) {
-            ctx.root.$accessor.decks.difficultCorrectAnswer()
-          } else {
-            ctx.root.$accessor.decks.practiceCorrectAnswer()
-          }
-          successIndex.value = -1
-          triggerAutoSave()
-        }, 1000)
+        setTimeout(
+          () => {
+            if (ctx.root.$accessor.decks.isShowingDifficult) {
+              ctx.root.$accessor.decks.difficultCorrectAnswer()
+            } else {
+              ctx.root.$accessor.decks.practiceCorrectAnswer()
+            }
+            successIndex.value = -1
+            triggerAutoSave()
+          },
+          hasSound ? 2000 : 1000
+        )
       } else {
         successIndex.value = cards.value.findIndex(card => card.correct)
         failedIndex.value = event.index

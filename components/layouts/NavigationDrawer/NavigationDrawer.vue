@@ -65,6 +65,12 @@
         icon="mdi-theme-light-dark"
       />
       <NavigationDrawerItem
+        :type="NavigationDrawerItemType.ACTION"
+        @click="onToggleSound"
+        :title="soundTitle"
+        :icon="soundIcon"
+      />
+      <NavigationDrawerItem
         v-if="$auth.loggedIn"
         :type="NavigationDrawerItemType.ACTION"
         @click="onLogout"
@@ -103,8 +109,25 @@ export default defineComponent({
     const themeTitle = computed(() => {
       return ctx.root.$vuetify.theme.dark ? 'Light theme' : 'Dark theme'
     })
+
+    const soundIcon = computed(() => {
+      return ctx.root.$accessor.sound.isOn
+        ? 'mdi-volume-high'
+        : 'mdi-volume-off'
+    })
+
+    const soundTitle = computed(() => {
+      return ctx.root.$accessor.sound.isOn ? 'Sound: on' : 'Sound: off'
+    })
+
     const onToggleTheme = () => {
       ctx.root.$vuetify.theme.dark = !ctx.root.$vuetify.theme.dark
+    }
+
+    const onToggleSound = () => {
+      ctx.root.$accessor.sound.isOn
+        ? ctx.root.$accessor.sound.turnSoundOff()
+        : ctx.root.$accessor.sound.turnSoundOn()
     }
 
     const onLogout = () => {
@@ -125,8 +148,11 @@ export default defineComponent({
 
     return {
       NavigationDrawerItemType,
+      soundIcon,
+      soundTitle,
       themeTitle,
       onAddNewDeck,
+      onToggleSound,
       onToggleTheme,
       onLogout,
       onChange,

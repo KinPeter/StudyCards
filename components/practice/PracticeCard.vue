@@ -41,7 +41,11 @@ export default defineComponent({
     const elem: Ref<any | null> = ref(null)
 
     const onClick = () => {
-      ctx.emit('cardClick', { correct: props.correct, index: props.index })
+      ctx.emit('cardClick', {
+        correct: props.correct,
+        index: props.index,
+        word: props.word,
+      })
       if (elem.value !== null) {
         elem.value.$el.blur()
       }
