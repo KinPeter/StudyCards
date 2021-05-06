@@ -153,7 +153,7 @@ export default defineComponent({
 }
 
 .practice {
-  max-width: 700px;
+  max-width: 1000px;
   height: 100%;
   margin: 0 auto;
 }
@@ -182,7 +182,7 @@ export default defineComponent({
   }
 }
 
-@media (min-width: 700px) {
+@media (min-width: 900px) {
   .practice__top-card {
     margin: 0 4px 4px;
     min-width: initial;

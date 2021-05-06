@@ -74,5 +74,9 @@ export default defineComponent({
 .practice-card .v-card__title {
   word-break: keep-all;
   font-family: 'Noto Serif KR', serif;
+
+  @media screen and (min-width: 500px) {
+    font-size: 1.75rem;
+  }
 }
 </style>

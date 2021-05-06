@@ -140,7 +140,7 @@ export default defineComponent({
   text-align: center;
 }
 
-@media (min-width: 700px) {
+@media (min-width: 900px) {
   .practice-cards {
     flex-wrap: wrap;
     flex-direction: row;
@@ -150,7 +150,7 @@ export default defineComponent({
   .practice-cards__card {
     max-width: calc(50% - 8px);
     margin: 4px;
-    height: 150px;
+    height: 200px;
   }
 }
 </style>
